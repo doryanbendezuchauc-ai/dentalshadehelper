@@ -144,13 +144,24 @@ IMPORTANT: Respond ONLY with the JSON object. Do not include any other text.`,
 
     const data = await response.json();
 
-    const content = data?.choices?.[0]?.message?.content;
-    if (typeof content !== 'string') {
-      console.error('Unexpected API response structure:', JSON.stringify(data).substring(0, 200));
-      return res.status(502).json({ error: 'Received an unexpected response from the AI service.' });
+    // Extract content — handle various response shapes
+    const choice = data?.choices?.[0];
+    const content = choice?.message?.content;
+
+    // Check if the model refused or content was filtered
+    if (choice?.finish_reason === 'content_filter') {
+      return res.status(422).json({ error: 'The AI could not process these images. Please try with clearer dental photos.' });
     }
 
-    return res.json(data);
+    if (typeof content === 'string' && content.length > 0) {
+      return res.json(data);
+    }
+
+    // Content might be null/undefined — log full structure for debugging
+    console.error('Unexpected API response:', JSON.stringify(data).substring(0, 500));
+    return res.status(502).json({
+      error: 'The AI returned an empty response. Please try again with clearer photos.',
+    });
   } catch (err: unknown) {
     if (err instanceof Error && err.name === 'AbortError') {
       console.error('Request to GitHub Models API timed out.');
