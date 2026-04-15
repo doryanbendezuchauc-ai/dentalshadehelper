@@ -1,0 +1,36 @@
+# ─── Dependencies ───
+node_modules/
+
+# ─── Build output ───
+build/
+dist/
+.vercel/
+
+# ─── Environment secrets (CRITICAL — never commit these) ───
+.env
+.env.local
+.env.production
+.env.development
+.env*.local
+!.env.example
+
+# ─── OS junk ───
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ─── Logs ───
+*.log
+npm-debug.log*
+
+# ─── IDE / Editor ───
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ─── Coverage & testing ───
+coverage/
+
+# ─── Claude Code local settings ───
+.claude/

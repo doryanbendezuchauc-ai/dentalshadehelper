@@ -1,0 +1,5 @@
+{
+  "name": "Dental Shade Assistant",
+  "description": "An AI-powered tool to help dentists analyze and match tooth colors using the VITA classical shade guide.",
+  "requestFramePermissions": ["camera"]
+}
